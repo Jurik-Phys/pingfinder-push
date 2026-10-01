@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.20)
 #         ${APP_GIT_DIRTY}         #
 # ******************************** #
 
-project(pingfinder-push VERSION 0.0.2)
+project(pingfinder-push VERSION 0.0.3)
 
 add_compile_definitions(
     APP_VERSION="${PROJECT_VERSION}"
@@ -60,3 +60,8 @@ add_subdirectory(src)
 add_executable(pingfinder-push ${SOURCE_EXE} ${RESOURCES})
 
 target_link_libraries(pingfinder-push PRIVATE Qt6::Core Qt6::Network src-lib)
+
+install(TARGETS pingfinder-push
+    RUNTIME DESTINATION bin
+)
+

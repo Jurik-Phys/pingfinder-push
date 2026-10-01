@@ -1,5 +1,8 @@
-pingfinder-push (0.0.2-1) unstable; urgency=medium
+pingfinder-push (0.0.3-1) unstable; urgency=medium
 
-  * No change
+  * Initial version of pingfinder-push
+  * Move to Git Flow stategy
+  * Add Debian package build system
+  * Add GitHub Actions build and release workflows
 
- -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 01 Oct 2026 14:51:28 +0300
+ -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 01 Oct 2026 20:53:45 +0300

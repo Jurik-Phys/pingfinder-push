@@ -4,5 +4,6 @@ pingfinder-push (0.0.3-1) unstable; urgency=medium
   * Move to Git Flow stategy
   * Add Debian package build system
   * Add GitHub Actions build and release workflows
+  * Fix problem with /usr/bin/pingfinder-push in deb
 
- -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 01 Oct 2026 20:53:45 +0300
+ -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 01 Oct 2026 21:21:50 +0300

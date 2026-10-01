@@ -1,0 +1,17 @@
+Source: pingfinder-push
+Section: misc
+Priority: optional
+Maintainer: Yury Ovsyannikov <jurik.phys@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+               cmake,
+               qt6-base-dev
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+
+Package: pingfinder-push
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Description: PingFinder message daemon IPC client
+ Command-line utility for sending messages to the PingFinder
+ message daemon over its Unix socket.

@@ -1,0 +1,38 @@
+name: Build Debian package
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: debian:13
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y \
+            debhelper \
+            cmake \
+            qt6-base-dev \
+            git
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Trust checked-out repository
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Build package
+        run: ./scripts/build-deb.sh
+
+      - name: Show package
+        run: ls -lh ../*.deb

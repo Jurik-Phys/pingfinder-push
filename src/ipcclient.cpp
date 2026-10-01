@@ -166,7 +166,8 @@ void IpcClient::handleMessagePushScheduled(const QJsonObject& obj){
 
     qDebug() << "     - - -";
     qDebug() << "[OK] True response from \"pingfinder-msgd\"";
-    qDebug() << "[II] The following tasks have been added to the schedule:";
+    qDebug() << "[II] [II] The following tasks were added to the schedule "
+                                                      "or already exist in it:";
 
     QJsonArray tasksArray = obj["tasks"].toArray();
 

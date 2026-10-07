@@ -18,9 +18,6 @@ class IpcClient : public QObject {
         void onReadyRead();
 
     private:
-        // Загрузка списка клиентов программу. В данном случае из файла
-        bool loadClientsFromFile(const QString& fileName);
-
         QLocalSocket* m_socket;
         const QString m_sockeFullPath = "/tmp/pingfinder/msgd.socket";
 

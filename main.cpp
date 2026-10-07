@@ -10,6 +10,8 @@ int main(int argc, char** argv){
 
     QStringList args = QCoreApplication::arguments();
 
+    DbReader dbreader;
+
     // Help to display & exit
     if (args.contains("-h") || args.contains("--help") || args.size() == 1)
     {
@@ -27,7 +29,7 @@ int main(int argc, char** argv){
     // List users to display & exit
     if (args.size() == 2){
         if (args.contains("--list-users") || args.contains("-l")){
-            listUsers();
+            listUsers(dbreader);
             exit(1);
         }
     }
@@ -41,7 +43,7 @@ int main(int argc, char** argv){
         exit(1);
     };
 
-    if (!cmdValidateAndSetDefault(cmdInfo, error)){
+    if (!cmdValidateAndSetDefault(cmdInfo, error, dbreader)){
         qDebug().noquote() << "[EE]" << error;
         if (!error.contains("Unknown or disabled user")){
             qDebug().noquote() << "[II] Run with -h or --help to display usage "

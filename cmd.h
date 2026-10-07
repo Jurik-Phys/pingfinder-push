@@ -20,7 +20,7 @@ struct CommandInfo
 
 const QVector<CommandInfo>& getCommandList();
 void printHelp();
-void listUsers();
+void listUsers(DbReader& dbreader);
 
 struct CmdInfo {
     QString     msgType;   // hello | notice //
@@ -30,7 +30,8 @@ struct CmdInfo {
 };
 
 bool cmdParsing(const QStringList& args, CmdInfo &request, QString& error);
-bool cmdValidateAndSetDefault(CmdInfo& request, QString& error);
+bool cmdValidateAndSetDefault(CmdInfo& request, QString& error,
+                                                            DbReader& dbreader);
 
 QJsonDocument cmdToIpcJsonDocument(const CmdInfo& cmdInfo);
 

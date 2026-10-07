@@ -220,8 +220,8 @@ bool cmdParsing(const QStringList& args, CmdInfo& request, QString& error){
     return result;
 }
 
-bool cmdValidateAndSetDefault(CmdInfo& request, QString& error){
-    DbReader dbreader = new DbReader();
+bool cmdValidateAndSetDefault(CmdInfo& request, QString& error,
+                                                            DbReader& dbreader){
     bool result = true;
 
     // Если msgType не задан, но есть само message, то тип сообщения - "notice"
@@ -310,8 +310,7 @@ bool cmdValidateAndSetDefault(CmdInfo& request, QString& error){
     return result;
 }
 
-void listUsers() {
-    DbReader dbreader = new DbReader();
+void listUsers(DbReader& dbreader) {
     QStringList ids = dbreader.getAllClientId();
     QStringList nicks = dbreader.getAllClientNick();
 

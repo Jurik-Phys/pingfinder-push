@@ -41,7 +41,6 @@ void IpcClient::sendCommand(const QJsonDocument& inJsonDoc){
         qDebug() << "[EE] Write timeout:" << m_socket->errorString();
         exit(1);
     }
-
 }
 
 void IpcClient::onReadyRead(){
@@ -114,7 +113,6 @@ void IpcClient::handleCommand(const QJsonObject& obj){
     if (obj["action"] == "message_push_scheduled"){
         handleMessagePushScheduled(obj["payload"].toObject());
     }
-
 }
 
 void IpcClient::handleMessagePushValidationFailed(const QJsonObject& obj){

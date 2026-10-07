@@ -4,6 +4,8 @@
 #define DBREADER_H
 
 #include <QObject>
+#include <QCoreApplication>
+#include <QtNetwork/QLocalSocket>
 
 class DbReader : public QObject{
 
@@ -20,10 +22,18 @@ class DbReader : public QObject{
         bool isExistsClientByNickname(const QString& clientNickname);
 
     private:
-        QString m_clientsFile = "/etc/pingfinder/msgd/clients.json";
-        QString m_clientStatusFile="/var/lib/pingfinder/msgd/clientStatus.json";
+        // В DbReader используется отдельный запрос к сокету для получения
+        // общего списка клиентов и их идентификаторов. Включение данной логики
+        // в основнй IpcServer видится не желательным т.к., приводит к смешению
+        // ответственноси и необоснованному раздуванию класса IpcServer
+        QLocalSocket* m_socket;
+        const QString m_sockeFullPath = "/tmp/pingfinder/msgd.socket";
 
-        void loadClientsData();
+        // Запрос списка клиентов у IPC сервера (pingfinder-msgd)
+        QJsonDocument buildClientsListRequest();
+        QJsonDocument ipcRequestClientsList();
+
+        void initClientsData(const QJsonDocument& doc);
 
         QStringList m_listOfClientId;
         QStringList m_listOfClientNickname;

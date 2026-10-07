@@ -11,43 +11,33 @@
 DbReader::DbReader(QObject* parent) : QObject(parent){
 
     // Загрузка списка клиентов, при неудаче выход из программы
-    loadClientsData();
+    QJsonDocument clientsListJsonDoc  = ipcRequestClientsList();
+    initClientsData(clientsListJsonDoc);
 }
 
 DbReader::~DbReader(){
 
 }
 
-void DbReader::loadClientsData(){
-
-    QFile clientsFile(m_clientsFile);
-    if (!clientsFile.open(QIODevice::ReadOnly)){
-        qDebug() << "[EE] Error opening" << m_clientsFile;
-        exit(1);
-    }
-
-    m_listOfClientId.clear();
-    m_listOfClientNickname.clear();
-
-    QJsonParseError error;
-    QJsonDocument doc = QJsonDocument::fromJson(clientsFile.readAll(), &error);
-
-    if (error.error != QJsonParseError::NoError){
-        qDebug() << "[EE] JSON parse error:" << error.errorString();
-        exit(1);
-    }
+void DbReader::initClientsData(const QJsonDocument& doc){
 
     QJsonObject root = doc.object();
-    QJsonArray clients = root["clients"].toArray();
+    QJsonObject payloadJson = root["payload"].toObject();
+    QJsonArray clients = payloadJson["clients"].toArray();
 
-    for (int i = 0; i < clients.size(); ++i){
-        QJsonObject obj = clients[i].toObject();
-        if (obj["enabled"].toBool()){
-            QString id = QString::number(obj["id"].toInt());
-            QString nickname = obj["nickname"].toString();
+    if (root["action"] == "clients_list_created"){
+        for (int i = 0; i < clients.size(); ++i){
+            QJsonObject clientObj = clients[i].toObject();
+
+            QString id = QString::number(clientObj["id"].toInt());
+            QString nickname = clientObj["nickname"].toString();
             m_listOfClientId.push_back(id);
             m_listOfClientNickname.push_back(nickname);
         }
+    }
+    else {
+        qDebug() << "[II] Failed to retrieve the client list. Exiting.";
+        exit(1);
     }
 }
 
@@ -67,4 +57,67 @@ bool DbReader::isExistsClientByNickname(const QString& clientNickname){
     return m_listOfClientNickname.contains(clientNickname, Qt::CaseInsensitive);
 }
 
+QJsonDocument DbReader::buildClientsListRequest(){
+    QJsonObject ipcJsonObj;
+    ipcJsonObj["action"] = "clients_request";
+
+    QJsonObject payloadJson;
+    payloadJson["provided_by"] = QCoreApplication::applicationName();
+
+    ipcJsonObj["payload"] = payloadJson;
+
+    return QJsonDocument(ipcJsonObj);
+}
+
+QJsonDocument DbReader::ipcRequestClientsList(){
+    // Синхронное получение списка клиентов при запуске программы
+
+    // Запрос //
+    QLocalSocket socket;
+
+    socket.connectToServer(m_sockeFullPath);
+
+    if (!socket.waitForConnected(1000)){
+        qDebug() << "     - - - ";
+        qDebug() << "[EE] Unable to connect:" << socket.errorString();
+        exit(1);
+    }
+
+    QByteArray reqst = buildClientsListRequest().toJson(QJsonDocument::Compact);
+    reqst.append('\n');
+
+    if (socket.write(reqst) == -1){
+        qDebug() << "[II] Write failed:" << socket.errorString();
+        exit(1);
+    }
+
+    // Ответ //
+    QByteArray buffer;
+    while (!buffer.contains('\n')){
+        if (!socket.waitForReadyRead(1000)){
+            qDebug() << "[EE] Receive clients list error:"
+                                                        << socket.errorString();
+            exit(1);
+        }
+
+        buffer += socket.readAll();
+    }
+
+    // Выделение строки c json'ом
+    QByteArray line = buffer.left(buffer.indexOf('\n')).trimmed();
+
+    // Очистка буфера
+    buffer.remove(0, buffer.indexOf('\n') + 1);
+
+    // Clients List //
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(line, &error);
+
+    if (error.error != QJsonParseError::NoError){
+        qDebug() << "[EE] JSON parse error:" << error.errorString();
+        exit(1);
+    }
+
+    return doc;
+}
 // End dbreader.cpp

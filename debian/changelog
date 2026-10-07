@@ -1,9 +1,5 @@
-pingfinder-push (0.0.3-1) unstable; urgency=medium
+pingfinder-push (0.0.4-1) unstable; urgency=medium
 
-  * Initial version of pingfinder-push
-  * Move to Git Flow stategy
-  * Add Debian package build system
-  * Add GitHub Actions build and release workflows
-  * Fix problem with /usr/bin/pingfinder-push in deb
+  * Request client list from pingfinder-msgd via IPC
 
- -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 01 Oct 2026 21:21:50 +0300
+ -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 08 Oct 2026 01:41:35 +0300

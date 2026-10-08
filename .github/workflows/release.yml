@@ -39,6 +39,10 @@ jobs:
       - name: Show Debian changelog
         run: cat debian/changelog
 
+      - name: Extract release notes
+        run: |
+          dpkg-parsechangelog -S Changes > release-notes.md
+
       - name: Get package name
         id: package
         run: |
@@ -56,4 +60,5 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
+          body_path: release-notes.md
           files: ../${{ steps.package.outputs.name }}_*.deb

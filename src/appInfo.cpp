@@ -52,11 +52,17 @@ QString AppInfo::appBaseVersion(){
 }
 
 QString AppInfo::appFullVersion(){
-    QString res(QString("v%1 (git-%2%3, %4)")
-            .arg(APP_VERSION)
-            .arg(APP_GIT_HASH)
-            .arg(APP_GIT_DIRTY)
-            .arg(APP_GIT_BRANCH));
+    QString res;
+    if (QString(APP_GIT_HASH).isEmpty()){
+        res = QString("v%1").arg(APP_VERSION);
+    }
+    else {
+        res = QString("v%1 (git-%2%3, %4)").arg(APP_VERSION)
+                                           .arg(APP_GIT_HASH)
+                                           .arg(APP_GIT_DIRTY)
+                                           .arg(APP_GIT_BRANCH);
+    }
+
     return res;
 }
 

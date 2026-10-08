@@ -10,8 +10,6 @@ int main(int argc, char** argv){
 
     QStringList args = QCoreApplication::arguments();
 
-    DbReader dbreader;
-
     // Help to display & exit
     if (args.contains("-h") || args.contains("--help") || args.size() == 1)
     {
@@ -25,6 +23,12 @@ int main(int argc, char** argv){
         AppInfo::print();
         return 0;
     }
+
+    // Запрос и получение списка клиентов производится после потенциального
+    // вызова версии программы и справки по аргументам командной строки.
+    // В противном случае при отсутствии соединения с pingfinder-msgd
+    // невозможно вызвать ни справку, ни  версию программы
+    DbReader dbreader;
 
     // List users to display & exit
     if (args.size() == 2){

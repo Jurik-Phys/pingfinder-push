@@ -1,5 +1,7 @@
-pingfinder-push (0.0.4-1) unstable; urgency=medium
+pingfinder-push (0.0.5-1) unstable; urgency=medium
 
-  * Request client list from pingfinder-msgd via IPC
+  * Fix app version without Git tree
+  * Fix getting app version and CLI help
+  * Add release notes to GitHub by GitHub Actions
 
- -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 08 Oct 2026 01:41:35 +0300
+ -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 08 Oct 2026 14:04:25 +0300

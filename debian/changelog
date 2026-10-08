@@ -1,7 +1,5 @@
-pingfinder-push (0.0.5-1) unstable; urgency=medium
+pingfinder-push (0.0.6-1) unstable; urgency=medium
 
-  * Fix app version without Git tree
-  * Fix getting app version and CLI help
-  * Add release notes to GitHub by GitHub Actions
+  * Tuning GitHub release changelog
 
- -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 08 Oct 2026 14:04:25 +0300
+ -- Yury Ovsyannikov <jurik.phys@gmail.com>  Thu, 08 Oct 2026 14:34:31 +0300

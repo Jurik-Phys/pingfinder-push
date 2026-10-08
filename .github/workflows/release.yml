@@ -41,7 +41,10 @@ jobs:
 
       - name: Extract release notes
         run: |
-          dpkg-parsechangelog -S Changes > release-notes.md
+          {
+            echo "## Changes and fix"
+            dpkg-parsechangelog -S Changes | sed '1,3d; s/^  \* /- /'
+          } > release-notes.md
 
       - name: Get package name
         id: package
